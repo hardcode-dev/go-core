@@ -9,8 +9,8 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Scan осуществляет обход рекурсивный ссылок сайта, указанного в URL, с учётом глубины перехода по ссылкам depth.
-// baseurl должен совпадать с url и используется для отфильтровывания внешних ссылок (не содиржащих исходного url).
+// Scan осуществляет обход рекурсивный ссылок сайта, указанного в URL,
+// с учётом глубины перехода по ссылкам, переданной в depth.
 func Scan(url string, depth int) (data map[string]string, err error) {
 	data = make(map[string]string)
 
@@ -19,6 +19,10 @@ func Scan(url string, depth int) (data map[string]string, err error) {
 	return data, nil
 }
 
+// parse рекурсивно обходит ссылки на странице, переданной в url.
+// Глубина рекурсии задаётся в depth.
+// Каждая найденная ссылка записывается в ассоциативный массив
+// data вместе с названием страницы.
 func parse(url, baseurl string, depth int, data map[string]string) error {
 	if depth == 0 {
 		return nil
