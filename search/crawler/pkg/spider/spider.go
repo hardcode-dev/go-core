@@ -9,7 +9,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Scan осуществляет обход рекурсивный ссылок сайта, указанного в URL,
+// Scan осуществляет рекурсивный обход ссылок сайта, указанного в URL,
 // с учётом глубины перехода по ссылкам, переданной в depth.
 func Scan(url string, depth int) (data map[string]string, err error) {
 	data = make(map[string]string)
