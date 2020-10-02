@@ -26,6 +26,6 @@ type Point struct {
 }
 
 type Place struct {
-	Name string
-	Point
+	Name  string
+	Point // встраивание
 }
