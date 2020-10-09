@@ -29,6 +29,7 @@ type user struct {
 
 // Глобальные переменные (не лучшая практика, но для небольшого приложения можно использовать).
 var (
+	loginURL = "https://login.yandex.ru/info?format=json"
 	// Настройки подключения к Яндекс.OAuth.
 	oauthStateString  = "pseudo-random"
 	yandexOauthConfig = &oauth2.Config{
@@ -101,7 +102,7 @@ func getUserInfo(state string, code string) ([]byte, error) {
 	}
 
 	client := &http.Client{}
-	request, err := http.NewRequest("GET", "https://login.yandex.ru/info?format=json", nil)
+	request, err := http.NewRequest("GET", loginURL, nil)
 	if err != nil {
 		log.Fatalln(err)
 	}
