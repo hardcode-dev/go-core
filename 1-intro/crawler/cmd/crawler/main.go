@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	"go-core/search/crawler/pkg/spider"
+	"go-core/1-intro/crawler/pkg/spider"
 )
 
 func main() {

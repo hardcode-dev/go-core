@@ -6,7 +6,6 @@ import (
 )
 
 func TestList_MinSpanTree(t *testing.T) {
-
 	l := NewList()
 	l.AddNodes(1, 2, 3, 4, 5, 6)
 	l.AddEdge(1, 2, 10)
