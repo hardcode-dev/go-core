@@ -7,15 +7,7 @@ import (
 )
 
 func main() {
-	/*type divFunc = func(x, y float64) (float64, error)
-	var div divFunc
-	div = division
-	res, err := div(10, 3)
-	if err != nil {
-		panic(err)
-	}
-	log.Printf("10 делить на 3 будет %f\n", res)
-	*/
+
 	x := 10
 	f := func() {
 		log.Println("X доступна из замыкания:", x)
