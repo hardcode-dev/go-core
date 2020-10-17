@@ -3,6 +3,7 @@
 package spider
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 
@@ -41,12 +42,22 @@ func parse(url, baseurl string, depth int, data map[string]string) error {
 
 	links := pageLinks(nil, page)
 	for _, link := range links {
-		if data[link] == "" && strings.HasPrefix(link, baseurl) {
-			parse(link, baseurl, depth-1, data)
+		absoluteLink, err := absoluteLink(link, baseurl)
+		if err == nil && data[absoluteLink] == "" {
+			parse(absoluteLink, baseurl, depth-1, data)
 		}
 	}
-
 	return nil
+}
+
+// absoluteLink преобразует относительные ссылки в абсолютные
+func absoluteLink(link,baseurl string) (string, error) {
+	if strings.HasPrefix(link, "/") {
+		return baseurl + link, nil
+	} else if  strings.HasPrefix(link, baseurl){
+		return link, nil
+	}
+	return link, errors.New("external resource link")
 }
 
 // pageTitle осуществляет рекурсивный обход HTML-страницы и возвращает значение элемента <tittle>.
