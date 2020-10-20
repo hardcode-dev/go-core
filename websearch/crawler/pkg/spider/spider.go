@@ -52,7 +52,7 @@ func parse(url, baseurl string, depth int, data map[string]string) error {
 // pageTitle осуществляет рекурсивный обход HTML-страницы и возвращает значение элемента <tittle>.
 func pageTitle(n *html.Node) string {
 	var title string
-	if n.Type == html.ElementNode && n.Data == "title" {
+	if n.Type == html.ElementNode && n.Data == "title" && n.FirstChild != nil {
 		return n.FirstChild.Data
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
