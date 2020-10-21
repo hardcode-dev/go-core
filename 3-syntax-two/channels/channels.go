@@ -25,10 +25,8 @@ func main() {
 	var ch chan int // переменная типа канал, принимающий int
 	ch = make(chan int)
 	go func(ch chan<- int) { // канал только на отправку
-		ch <- 100
+		ch <- 100 // блок
 	}(ch)
-	val = <-ch
+	val = <-ch // блок
 	fmt.Println(val)
 }
-
-// OUTPUT: 100

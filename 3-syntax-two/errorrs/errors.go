@@ -9,17 +9,28 @@ import (
 
 var errExample error
 
+type myErr int
+
+func (me myErr) Error() string {
+	return "ошибка!"
+}
+
+var ErrME myErr
+
 func main() {
 	errExample = errors.New("пример создания ошибки с помощью пакета errors") // с маленькой буквы!
 	fmt.Println(errExample.Error())
 	errExample = fmt.Errorf("пример создания ошибки с помощью пакета fmt")
 	fmt.Println(errExample) // почему без вызова метода Error()?
 
-	val, err := envVar("неподходящее_имя_переменной")
+	val, err := envVar("1234")
+	if err == ErrME {
+		fmt.Println("My Error")
+	}
 	if err != nil {
 		log.Fatal(err)
 	}
-	_ = val
+	fmt.Println(val)
 }
 
 // envVar возвращает переменную окружения, заданную по имени.
@@ -27,7 +38,7 @@ func main() {
 func envVar(name string) (string, error) {
 	val := os.Getenv(name)
 	if val == "" {
-		return val, fmt.Errorf("переменная с именем %s не найдена", name)
+		return val, os.ErrInvalid
 	}
 
 	return val, nil

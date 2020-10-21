@@ -10,9 +10,13 @@ func main() {
 		Name: "Дмитрий",
 		Age:  37,
 	}
-	printInfo(p)
+	printInfo(&p)
 }
 
-func printInfo(p pkg.Person) {
-	fmt.Println(p.Info())
+type Informer interface {
+	Info() string
+}
+
+func printInfo(i Informer) {
+	fmt.Println(i.Info())
 }
