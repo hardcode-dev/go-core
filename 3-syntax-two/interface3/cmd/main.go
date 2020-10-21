@@ -9,7 +9,7 @@ func main() {
 	// в рабочем коде используем конкретную реализацию в БД
 	s := storage.NewPgDB()
 	num := usersNum(s)
-	fmt.Println(num)
+	fmt.Printf("В системе зарегистрировано %d пользователей.\n", num)
 }
 
 func usersNum(s storage.Interface) int {
