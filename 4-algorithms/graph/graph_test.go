@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 )
 
@@ -27,4 +28,5 @@ func TestList_MinSpanTree(t *testing.T) {
 	if got != want {
 		t.Fatalf("длина дерева %d, а ожидалось %d", got, want)
 	}
+	sort.Slice()
 }

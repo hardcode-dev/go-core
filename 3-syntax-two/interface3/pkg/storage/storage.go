@@ -7,5 +7,6 @@ type Interface interface {
 
 // User - пользователь.
 type User struct {
-	Name string
+	Name     string
+	Password string
 }

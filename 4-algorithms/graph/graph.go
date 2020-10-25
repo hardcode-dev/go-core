@@ -55,9 +55,9 @@ func (l List) MinSpanTree() List {
 	// 		- находим ближайшего соседа и добавляем ребро в дерево
 
 	tree := NewList()
-	current := make(map[int]bool)
+	current := make(map[int]bool) // вершины, исследуемые на данном шаге
 	current[1] = true
-	visited := make(map[int]bool)
+	visited := make(map[int]bool) // посещённые вершины
 
 	initVal := func() (v1, v2, dist int) {
 		for k, v := range l {
