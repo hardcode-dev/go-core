@@ -9,7 +9,7 @@ import (
 )
 
 func TestScanSite(t *testing.T) {
-	const url = "https://habr.com"
+	const url = "https://go.dev"
 	const depth = 2
 	data, err := Scan(url, depth)
 	if err != nil {
