@@ -11,15 +11,15 @@ package main
 
 import "fmt"
 
+// Tree - Двоичное дерево поиска
+type Tree struct {
+	root *Element
+}
+
 // Element - элемент дерева
 type Element struct {
 	left, right *Element
 	Value       int
-}
-
-// Tree - Двоичное дерево поиска
-type Tree struct {
-	root *Element
 }
 
 // Insert - вставка элемента в дерево
