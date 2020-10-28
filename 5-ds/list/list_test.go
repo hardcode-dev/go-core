@@ -28,13 +28,13 @@ func TestList_Pop(t *testing.T) {
 	l.Push(Elem{Val: 1})
 
 	got := l.Pop().String()
-	want := "1 2"
+	want := "2 3"
 	if got != want {
 		t.Fatalf("получили %s, ожидалось %s", got, want)
 	}
 
 	got = l.Pop().Pop().String()
-	want = "1"
+	want = ""
 	if got != want {
 		t.Fatalf("получили %s, ожидалось %s", got, want)
 	}

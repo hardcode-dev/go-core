@@ -30,6 +30,9 @@ func (l *List) Push(e Elem) *Elem {
 	e.prev = &l.root
 	e.next = l.root.next
 	l.root.next = &e
+	if e.next != &l.root {
+		e.next.prev = &e
+	}
 	return &e
 }
 
@@ -41,7 +44,9 @@ func (l *List) String() string {
 		s += fmt.Sprintf("%v ", el.Val)
 		el = el.next
 	}
-	s = s[:len(s)-1]
+	if len(s) > 0 {
+		s = s[:len(s)-1]
+	}
 	return s
 }
 
