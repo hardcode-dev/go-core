@@ -2,7 +2,9 @@ package main
 
 import (
 	"log"
+	"net"
 	"net/http"
+	"time"
 
 	"gosearch/pkg/api"
 	"gosearch/pkg/crawler"
@@ -77,5 +79,15 @@ func (gs *gosearch) init() {
 
 func (gs *gosearch) run() {
 	log.Println("Запуск http-сервера на интерфейсе:", gs.addr)
-	http.ListenAndServe(gs.addr, gs.router)
+	srv := &http.Server{
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		Handler:      gs.router,
+		Addr:         gs.addr,
+	}
+	listener, err := net.Listen("tcp4", srv.Addr)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Fatal(srv.Serve(listener))
 }
