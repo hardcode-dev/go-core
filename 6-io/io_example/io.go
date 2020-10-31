@@ -11,6 +11,7 @@ func main() {
 	var b bytes.Buffer         // буфер, выполняет контракт io.Writer
 	b.Write([]byte("Hello, ")) // запись строки в буфер
 	fmt.Fprintf(&b, "World!")  // Fprintf() принимает io.Writer
+
 	// Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
 	// NewFile(fd uintptr, name string) *File
 	// os.File выполняет контракт io.Writer
@@ -23,7 +24,6 @@ func businessLogic(r io.Reader, w io.Writer) error {
 	b := make([]byte, 8) // буфер
 	for {
 		n, err := r.Read(b) // считываем данные в буфер
-		_ = n
 		if err == io.EOF {
 			break
 		}

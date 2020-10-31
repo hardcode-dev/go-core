@@ -31,4 +31,8 @@ func main() {
 	}
 
 	fmt.Printf("JSON-представление:\n%s\n", string(bytes))
+
+	{
+		_ = 0
+	}
 }
