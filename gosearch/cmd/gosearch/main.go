@@ -39,6 +39,7 @@ func main() {
 	server.run()
 }
 
+// new создаёт объект и службы сервера и возвращает указатель на него.
 func new() *gosearch {
 	gs := gosearch{}
 	gs.router = mux.NewRouter()
@@ -53,6 +54,7 @@ func new() *gosearch {
 	return &gs
 }
 
+// init производит сканирование сайтов и индексирование данных.
 func (gs *gosearch) init() {
 	log.Println("Сканирование сайтов.")
 	id := 0
@@ -77,6 +79,7 @@ func (gs *gosearch) init() {
 	}
 }
 
+// run запускает веб-сервер.
 func (gs *gosearch) run() {
 	log.Println("Запуск http-сервера на интерфейсе:", gs.addr)
 	srv := &http.Server{

@@ -1,5 +1,8 @@
 package api
 
+// HTTP REST API сервера GoSearch.
+// Прикладной интерфейс разработки для веб-приложения и других клиентов.
+
 import (
 	"encoding/json"
 	"errors"

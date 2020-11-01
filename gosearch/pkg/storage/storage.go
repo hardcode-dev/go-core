@@ -1,5 +1,7 @@
 package storage
 
+// Хранилище отсканированных документов.
+
 import (
 	"gosearch/pkg/crawler"
 )
