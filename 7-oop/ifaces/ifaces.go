@@ -34,16 +34,15 @@ func (*MemLogger) Log(string) error {
 
 func main() {
 	l := new(DBLogger)
-	val, err := calc(2, l, "сообщение")
+	err := logMsg(l, "сообщение")
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	_ = val
 }
 
 // logMsg записывает сообщение в журнал
-func calc(i int, l Logger, msg string) (int, error) {
+func logMsg(l Logger, msg string) error {
 	err := l.Log(msg)
-	return i * 2, err
+	return err
 }
