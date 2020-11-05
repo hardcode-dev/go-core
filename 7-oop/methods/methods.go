@@ -11,12 +11,12 @@ type Course struct {
 }
 
 // SetAuthor - метод для указателя на тип Course. Записывает имя автора.
-func (c *Course) SetAuthor(name string) {
+func (c Course) SetAuthor(name string) {
 	c.author = name
 }
 
 // Author - возвращает имя атора курса.
-func (c *Course) Author() string {
+func (c Course) Author() string {
 	return c.author
 }
 

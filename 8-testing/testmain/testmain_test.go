@@ -1,6 +1,7 @@
 package testmain
 
 import (
+	"flag"
 	"os"
 	"reflect"
 	"testing"
@@ -12,6 +13,7 @@ func TestMain(m *testing.M) {
 	db = new(Database)
 	db.connString = "postgres://user:pwd@server/database"
 	db.isOK = true
+	flag.Parse()
 	os.Exit(m.Run())
 }
 

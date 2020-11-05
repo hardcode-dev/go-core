@@ -14,9 +14,9 @@ func Test_reverse(t *testing.T) {
 			want: "gnirts",
 		},
 		{
-			name: "Тест №1",
+			name: "Тест №2",
 			s:    "ABCdef",
-			want: "fedCBD",
+			want: "fedCBA",
 		},
 	}
 	for _, tt := range tests {
