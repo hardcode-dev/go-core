@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"net/http/pprof"
 
 	"gosearch/pkg/engine"
 
@@ -33,6 +34,16 @@ func New(router *mux.Router, engine *engine.Service) *Service {
 }
 
 func (s *Service) endpoints() {
+	// профилирование приложения
+	s.router.HandleFunc("/debug/pprof/", pprof.Index)
+	s.router.HandleFunc("/debug/pprof/cmdline", pprof.Cmdline)
+	s.router.HandleFunc("/debug/pprof/profile", pprof.Profile)
+	s.router.HandleFunc("/debug/pprof/symbol", pprof.Symbol)
+	s.router.HandleFunc("/debug/pprof/trace", pprof.Trace)
+	s.router.Handle("/debug/pprof/goroutine", pprof.Handler("goroutine"))
+	s.router.Handle("/debug/pprof/heap", pprof.Handler("heap"))
+	s.router.Handle("/debug/pprof/threadcreate", pprof.Handler("threadcreate"))
+	s.router.Handle("/debug/pprof/block", pprof.Handler("block"))
 	// поиск
 	s.router.HandleFunc("/search/{query}", s.Search)
 	// веб-приложение

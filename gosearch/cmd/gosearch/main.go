@@ -15,7 +15,7 @@ import (
 	"gosearch/pkg/storage"
 	"gosearch/pkg/storage/memstore"
 
-	"github.com/gorilla/mux"
+	"github.com/gorilla/mux" // маршрутизатор HTTP-запросов
 )
 
 // Сервер Интернет-поисковика GoSearch.
@@ -83,8 +83,8 @@ func (gs *gosearch) init() {
 func (gs *gosearch) run() {
 	log.Println("Запуск http-сервера на интерфейсе:", gs.addr)
 	srv := &http.Server{
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
+		ReadTimeout:  40 * time.Second,
+		WriteTimeout: 40 * time.Second,
 		Handler:      gs.router,
 		Addr:         gs.addr,
 	}
@@ -92,5 +92,6 @@ func (gs *gosearch) run() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	log.Fatal(srv.Serve(listener))
 }
