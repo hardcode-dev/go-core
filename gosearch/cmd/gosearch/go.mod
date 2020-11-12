@@ -16,6 +16,7 @@ replace (
 
 require (
 	github.com/gorilla/mux v1.8.0
+	google.golang.org/protobuf v1.25.0 // indirect
 	gosearch/pkg/api v0.0.0-00010101000000-000000000000
 	gosearch/pkg/crawler v0.0.0-00010101000000-000000000000
 	gosearch/pkg/crawler/spider v0.0.0-00010101000000-000000000000

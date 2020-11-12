@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-// strToWords рзделяят строку на слова
+// strToWords рзделяет строку на слова
 func strToWrds(s string) (words []string) {
 	var last int
 	for i := 0; i < len(s); i++ {
@@ -61,7 +61,7 @@ func Test_strToWrds_strToWrds2(t *testing.T) {
 				t.Errorf("strToWrds() = %+v, want %+v", gotWords, tt.wantWords)
 			}
 			if gotWords := strToWrds2(tt.s); !reflect.DeepEqual(gotWords, tt.wantWords) {
-				t.Errorf("strToWrds() = %+v, want %+v", gotWords, tt.wantWords)
+				t.Errorf("strToWrds2() = %+v, want %+v", gotWords, tt.wantWords)
 			}
 		})
 	}
@@ -90,7 +90,9 @@ func Benchmark_strToWrds(b *testing.B) {
 		b.Run(tt.name, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				words := strToWrds(tt.s)
-				_ = words
+				if len(words) > 2 {
+					b.Fatalf("len(words) > 2: %d", len(words))
+				}
 			}
 		})
 	}

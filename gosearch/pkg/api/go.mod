@@ -13,6 +13,7 @@ replace (
 
 require (
 	github.com/gorilla/mux v1.8.0
+	github.com/prometheus/client_golang v1.8.0
 	gosearch/pkg/engine v0.0.0-00010101000000-000000000000
 	gosearch/pkg/index/hash v0.0.0-00010101000000-000000000000
 	gosearch/pkg/storage/memstore v0.0.0-00010101000000-000000000000
