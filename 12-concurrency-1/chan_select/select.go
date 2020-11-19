@@ -20,14 +20,11 @@ func main() {
 	go generator(ch1, 1)
 	go generator(ch2, 2)
 
-	var val string
 	for {
 		select {
-		case val = <-ch1:
-			{
-				fmt.Println(val)
-			}
-		case val = <-ch2:
+		case val := <-ch1:
+			fmt.Println(val)
+		case val := <-ch2:
 			fmt.Println(val)
 		default:
 			time.Sleep(time.Millisecond * 10)

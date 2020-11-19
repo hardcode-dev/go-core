@@ -13,7 +13,7 @@ func generator(ch chan<- int) {
 }
 
 func main() {
-	var ch = make(chan int, 20)
+	var ch = make(chan int)
 	go generator(ch)
 	for {
 		time.Sleep(time.Millisecond * 500)

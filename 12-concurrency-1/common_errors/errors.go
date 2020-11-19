@@ -37,5 +37,5 @@ func error3() {
 func main() {
 	//error1()
 	//error2()
-	//error3()
+	error3()
 }
