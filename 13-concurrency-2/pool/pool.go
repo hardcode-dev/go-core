@@ -29,7 +29,7 @@ func main() {
 	pool.Put(pool.New())
 	pool.Put(pool.New())
 
-	const N = 10000
+	const N = 10_000
 	var wg sync.WaitGroup
 	wg.Add(N)
 	for i := 0; i < N; i++ {

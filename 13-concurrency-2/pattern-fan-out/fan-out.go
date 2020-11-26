@@ -29,7 +29,7 @@ func main() {
 	}()
 
 	go func() {
-		for i := 0; i < 100; i++ {
+		for i := 0; i < 10; i++ {
 			src <- i
 		}
 		close(src)
