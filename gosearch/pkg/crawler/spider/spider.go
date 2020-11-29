@@ -4,6 +4,8 @@ package spider
 
 import (
 	"net/http"
+	"net/url"
+	"path"
 	"strings"
 
 	"golang.org/x/net/html"
@@ -25,7 +27,7 @@ func New() *Service {
 func (s *Service) Scan(url string, depth int) (data []crawler.Document, err error) {
 	pages := make(map[string]string)
 
-	parse(url, url, depth, pages)
+	parse(url, depth, pages)
 
 	for url, title := range pages {
 		item := crawler.Document{
@@ -42,40 +44,66 @@ func (s *Service) Scan(url string, depth int) (data []crawler.Document, err erro
 // Глубина рекурсии задаётся в depth.
 // Каждая найденная ссылка записывается в ассоциативный массив
 // data вместе с названием страницы.
-func parse(url, baseurl string, depth int, data map[string]string) error {
+func parse(link string, depth int, data map[string]string) error {
 	if depth == 0 {
 		return nil
 	}
 
-	response, err := http.Get(url)
+	response, err := http.Get(link)
 	if err != nil {
 		return err
 	}
+	defer response.Body.Close()
 	page, err := html.Parse(response.Body)
 	if err != nil {
 		return err
 	}
 
-	data[url] = pageTitle(page)
+	data[link] = pageTitle(page)
 
 	if depth == 1 {
 		return nil
 	}
+
+	// Парсим текущую ссылку, это будет базовым URL для ссылок, найденных на странице
+	bu, err := url.Parse(link)
+	if err != nil {
+		return err
+	}
+
 	links := pageLinks(nil, page)
-	for _, link := range links {
-		link = strings.TrimSuffix(link, "/")
-		// относительная ссылка
-		if strings.HasPrefix(link, "/") && len(link) > 1 {
-			link = baseurl + link
-		}
-		// ссылка уже отсканирована
-		if data[link] != "" {
+	for _, l := range links {
+		u, err := url.Parse(l)
+		if err != nil {
+			// Ошибка парсинга URL - пропускаем ссылку и продолжаем дальше
 			continue
 		}
-		// ссылка содержит базовый url полностью
-		if strings.HasPrefix(link, baseurl) {
-			parse(link, baseurl, depth-1, data)
+		if u.IsAbs() == true {
+			// Абсолютная ссылка - оставляем как есть
+
+		} else if strings.HasPrefix(l, "//") {
+			// Абсолютная ссылка вида "//foo", добавляем схему (http/https) из базового URL
+			u.Scheme = bu.Scheme
+
+		} else if strings.HasPrefix(l, "/") {
+			// Относительная ссылка вида "/foo", добаввляем схему и хост из базового URL
+			u.Scheme = bu.Scheme
+			u.Host = bu.Host
+
+		} else {
+			// Остальные ссылки считаем относительными от текущего пути в базовом URL: "foo", "./foo" etc
+			// Добавляем схему, хост и path базового URL
+			// т.е. если базовый URL http://example.com/foo/test.html, а текущая ссылка "bar.html"
+			// ссылка будет превращена в http://example.com/foo/bar.html
+			u.Scheme = bu.Scheme
+			u.Host = bu.Host
+			u.Path = path.Dir(bu.Path) + "/" + path.Clean(u.Path)
 		}
+		// Ссылка уже отсканирована - пропускаем
+		if data[u.String()] != "" {
+			continue
+		}
+		parse(u.String(), depth-1, data)
 	}
 
 	return nil
