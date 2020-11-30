@@ -27,7 +27,7 @@ func Test_handler(t *testing.T) {
 
 	handler(srv)
 	wg.Wait()
-	if !strings.Contains(msg, "2019") {
+	if !strings.Contains(msg, "2020") {
 		t.Fatalf("неверное сообщение от сервера: %s", msg)
 	}
 }

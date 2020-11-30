@@ -12,7 +12,7 @@ import (
 
 // обработчик подключения
 func handler(conn net.Conn) {
-	conn.SetDeadline(time.Now().Add(time.Second * 10))
+	conn.SetDeadline(time.Now().Add(time.Second * 5))
 	r := bufio.NewReader(conn)
 	for {
 		msg, _, err := r.ReadLine()
@@ -24,6 +24,7 @@ func handler(conn net.Conn) {
 		if err != nil {
 			return
 		}
+		conn.SetDeadline(time.Now().Add(time.Second * 5))
 	}
 }
 
