@@ -56,27 +56,27 @@ func new() *gosearch {
 
 // init производит сканирование сайтов и индексирование данных.
 func (gs *gosearch) init() {
-	log.Println("Сканирование сайтов.")
-	id := 0
-	for _, url := range gs.sites {
-		log.Println("Сайт:", url)
-		data, err := gs.scanner.Scan(url, gs.depth)
-		if err != nil {
-			continue
+	log.Println("Сканирование сайтов")
+	chDocs, chErr := gs.scanner.BatchScan(gs.sites, 2)
+	go func() {
+		for err := range chErr {
+			log.Println("ошибка при добавлении сканировании документов:", err)
 		}
-		for i := range data {
-			data[i].ID = id
+	}()
+	go func() {
+		id := 0
+		for doc := range chDocs {
+			doc.ID = id
 			id++
+			gs.index.Add([]crawler.Document{doc})
+			err := gs.storage.StoreDocs([]crawler.Document{doc})
+			if err != nil {
+				log.Println("ошибка при сохранении документа в БД:", err)
+				continue
+			}
 		}
-		log.Println("Индексирование документов.")
-		gs.index.Add(data)
-		log.Println("Сохранение документов.")
-		err = gs.storage.StoreDocs(data)
-		if err != nil {
-			log.Println("ошибка при добавлении сохранении документов в БД:", err)
-			continue
-		}
-	}
+		log.Println("Сканирование сайтов завершено")
+	}()
 }
 
 // run запускает веб-сервер.

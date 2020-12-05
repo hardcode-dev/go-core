@@ -3,21 +3,78 @@
 package spider
 
 import (
+	"log"
 	"net/http"
 	"strings"
+	"sync"
 
 	"golang.org/x/net/html"
 
 	"gosearch/pkg/crawler"
 )
 
+const maxWorkers = 10
+
 // Service - служба поискового робота.
-type Service struct{}
+type Service struct {
+	maxWorkers int // максимальное количество одновременных потоков сканирования сайтов
+}
 
 // New - констрктор службы поискового робота.
 func New() *Service {
-	s := Service{}
+	s := Service{
+		maxWorkers: maxWorkers,
+	}
 	return &s
+}
+
+// BatchScan выполняет многопоточное сканирование. Функция возвращает канал с
+// отсканированными документами, и канал ошибок.
+//
+// Функция реализует шаблон Workers Pool для ограничения количества одновременно
+// запущенных потоков сканирования.
+func (s *Service) BatchScan(urls []string, depth int) (<-chan crawler.Document, <-chan error) {
+	chURLs := make(chan string)          // канал входных данных (адреса сайтов)
+	chOut := make(chan crawler.Document) // канал выходных данных (документов)
+	chErr := make(chan error)            // канал ошибок
+	var wg sync.WaitGroup
+	wg.Add(s.maxWorkers)
+
+	// пул рабочих потоков
+	for i := 0; i < s.maxWorkers; i++ {
+		go func() {
+			defer wg.Done()
+			for url := range chURLs {
+				data, err := s.Scan(url, depth)
+				if err != nil {
+					log.Println("ошибка:", err)
+					chErr <- err
+					return
+				}
+				for _, doc := range data {
+					log.Println("отсканирован документ:", doc)
+					chOut <- doc
+				}
+			}
+		}()
+	}
+	go func() {
+		wg.Wait()
+		log.Println("закрываются каналы ошибок и выходных данных")
+		close(chErr)
+		close(chOut)
+	}()
+
+	// задания для рабочих потоков
+	go func() {
+		for _, url := range urls {
+			chURLs <- url
+		}
+		log.Println("закрывается канал ссылок")
+		close(chURLs)
+	}()
+
+	return chOut, chErr
 }
 
 // Scan осуществляет рекурсивный обход ссылок сайта, указанного в URL,
