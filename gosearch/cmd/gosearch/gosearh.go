@@ -57,7 +57,7 @@ func new() *gosearch {
 // init производит сканирование сайтов и индексирование данных.
 func (gs *gosearch) init() {
 	log.Println("Сканирование сайтов")
-	chDocs, chErr := gs.scanner.BatchScan(gs.sites, 2)
+	chDocs, chErr := gs.scanner.BatchScan(gs.sites, 2, 10)
 	go func() {
 		for err := range chErr {
 			log.Println("ошибка при добавлении сканировании документов:", err)

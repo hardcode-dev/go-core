@@ -16,15 +16,11 @@ import (
 const maxWorkers = 10
 
 // Service - служба поискового робота.
-type Service struct {
-	maxWorkers int // максимальное количество одновременных потоков сканирования сайтов
-}
+type Service struct{}
 
 // New - констрктор службы поискового робота.
 func New() *Service {
-	s := Service{
-		maxWorkers: maxWorkers,
-	}
+	s := Service{}
 	return &s
 }
 
@@ -33,15 +29,15 @@ func New() *Service {
 //
 // Функция реализует шаблон Workers Pool для ограничения количества одновременно
 // запущенных потоков сканирования.
-func (s *Service) BatchScan(urls []string, depth int) (<-chan crawler.Document, <-chan error) {
+func (s *Service) BatchScan(urls []string, depth int, workers int) (<-chan crawler.Document, <-chan error) {
 	chURLs := make(chan string)          // канал входных данных (адреса сайтов)
 	chOut := make(chan crawler.Document) // канал выходных данных (документов)
 	chErr := make(chan error)            // канал ошибок
 	var wg sync.WaitGroup
-	wg.Add(s.maxWorkers)
+	wg.Add(workers)
 
 	// пул рабочих потоков
-	for i := 0; i < s.maxWorkers; i++ {
+	for i := 0; i < workers; i++ {
 		go func() {
 			defer wg.Done()
 			for url := range chURLs {
