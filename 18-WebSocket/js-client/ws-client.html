@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+   <head>
+   <title>WebSocket Client</title>
+   </head>
+
+   <body>
+      <h1>Клиент WebSocket</h1>
+      <p id="books"></p>
+   </body>
+
+   <script type="text/javascript">
+      // вызов функции API по WebSocket (http -> ws, https -> wss)
+      var socket = new WebSocket("ws://localhost:8080/books");
+
+      // событие установки соединения
+      socket.onopen = function() {
+        alert("Соединение установлено.");
+      };
+
+      // событие разрыва соединения
+      socket.onclose = function(event) {
+        if (event.wasClean) {
+          alert('Соединение закрыто чисто');
+        } else {
+          alert('Обрыв соединения'); // например, "убит" процесс сервера
+        }
+        alert('Код: ' + event.code + ' причина: ' + event.reason);
+      };
+
+      // событие получения сообщения
+      socket.onmessage = function(event) {
+        alert("Получены данные " + event.data);
+        document.getElementById("books").innerHTML = event.data;
+      };
+
+      // событие получения ошибки
+      socket.onerror = function(error) {
+        alert("Ошибка " + error.message);
+      };
+   </script>
+</html>

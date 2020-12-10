@@ -15,7 +15,6 @@ type API struct {
 
 // New создаёт объект API.
 func New(r *mux.Router) *API {
-
 	api := API{
 		router: r,
 		store:  sessions.NewCookieStore([]byte("secret_password")),

@@ -14,7 +14,6 @@ func (api *API) books(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 }
 
 func (api *API) newBook(w http.ResponseWriter, r *http.Request) {

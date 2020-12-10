@@ -1,5 +1,3 @@
-// +build interactive
-
 package api
 
 import (
