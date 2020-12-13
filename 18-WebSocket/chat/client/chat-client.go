@@ -12,17 +12,13 @@ import (
 )
 
 func main() {
-	/*	ws, _, err := websocket.DefaultDialer.Dial("ws://localhost:8080/messages", nil)
-		if err != nil {
-			log.Fatalf("не удалось подключиться к серверу: %v", err)
-		}
-		defer ws.Close()*/
+	// получение сообщений в фоне
 	go messages()
+	// интерактивная отправка сообщений в основном потоке
 	send()
 }
 
 func send() {
-
 	reader := bufio.NewReader(os.Stdin) // буфер для os.Stdin
 	for {
 		fmt.Print("-> ")

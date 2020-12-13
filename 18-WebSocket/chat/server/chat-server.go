@@ -11,22 +11,29 @@ import (
 
 var (
 	upgrader = websocket.Upgrader{}
-	msgQueue = make(chan string)
+	msgQueue = make(chan string) // очередь поступающих сообщений от клиентов
 
+	// каждому подключенному клиенту сопоставляется канал
+	// для получения сообщений от остальных клиентов
 	mux     sync.Mutex
 	clients = make([]chan string, 0)
 )
 
 func main() {
+	// регистрация точек API
 	http.HandleFunc("/send", send)
 	http.HandleFunc("/messages", messages)
+
+	// отправка сообщениq всем подключенным клиентам
 	go publishMessages()
+
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
+// приём сообщений от клиентов
 func send(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -41,9 +48,13 @@ func send(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	fmt.Println("получено сообщение:", string(message))
+
+	// все входящие сообщения пишутся в очередь,
+	// дальше они обрабатываются в потоке publishMessages
 	msgQueue <- string(message)
 }
 
+// получение сообщений от всех клиентов
 func messages(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -52,12 +63,16 @@ func messages(w http.ResponseWriter, r *http.Request) {
 	}
 	defer conn.Close()
 
+	// при подключении для клиента создаётся канал и добавляется в массив
 	mux.Lock()
 	client := make(chan string)
 	defer close(client)
 	clients = append(clients, client)
 	mux.Unlock()
 
+	// при отключении канал удаляется из массива, чтобы избежать паники.
+	// хотя тут всё равно возможнра паника, т.к. гонка.
+	// так что надо бы и панику обрабатывать.
 	defer func() {
 		mux.Lock()
 		for i := range clients {
@@ -69,6 +84,7 @@ func messages(w http.ResponseWriter, r *http.Request) {
 		mux.Unlock()
 	}()
 
+	// чтение сообщений из канала данного клиента
 	for msg := range client {
 		err := conn.WriteMessage(websocket.TextMessage, []byte(msg))
 		if err != nil {
@@ -77,6 +93,11 @@ func messages(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Отправка сообщениq всем подключенным клиентам.
+//
+// Поступающие сообщения записываются в канал msgQueue,
+// откуда они перенаправляются в каналы-клиенты.
+// Шаблон Fan-Out.
 func publishMessages() {
 	for msg := range msgQueue {
 		for _, c := range clients {
