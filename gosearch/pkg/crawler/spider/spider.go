@@ -13,8 +13,6 @@ import (
 	"gosearch/pkg/crawler"
 )
 
-const maxWorkers = 10
-
 // Service - служба поискового робота.
 type Service struct{}
 
