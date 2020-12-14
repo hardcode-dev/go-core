@@ -66,13 +66,10 @@ func messages(w http.ResponseWriter, r *http.Request) {
 	// при подключении для клиента создаётся канал и добавляется в массив
 	mux.Lock()
 	client := make(chan string)
-	defer close(client)
 	clients = append(clients, client)
 	mux.Unlock()
 
 	// при отключении канал удаляется из массива, чтобы избежать паники.
-	// хотя тут всё равно возможнра паника, т.к. гонка.
-	// так что надо бы и панику обрабатывать.
 	defer func() {
 		mux.Lock()
 		for i := range clients {
