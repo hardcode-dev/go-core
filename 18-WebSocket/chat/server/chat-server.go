@@ -24,7 +24,7 @@ func main() {
 	http.HandleFunc("/send", send)
 	http.HandleFunc("/messages", messages)
 
-	// отправка сообщениq всем подключенным клиентам
+	// отправка сообщений всем подключенным клиентам
 	go publishMessages()
 
 	err := http.ListenAndServe(":8080", nil)
@@ -93,7 +93,7 @@ func messages(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Отправка сообщениq всем подключенным клиентам.
+// Отправка сообщений всем подключенным клиентам.
 //
 // Поступающие сообщения записываются в канал msgQueue,
 // откуда они перенаправляются в каналы-клиенты.
