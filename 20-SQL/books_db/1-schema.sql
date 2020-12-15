@@ -39,7 +39,9 @@ CREATE TABLE books (
     year INTEGER DEFAULT 0, -- год выпуска (максимум текущий + 10)
     public_domain BOOLEAN DEFAULT FALSE, -- является ли общественным достоянием
     publisher_id INTEGER REFERENCES publishers(id) DEFAULT 0,
-    price INTEGER DEFAULT 0 CHECK (price >= 0)
+    price INTEGER DEFAULT 0 CHECK (price >= 0),
+    genres TEXT[] DEFAULT '{"не указано"}', -- жанры
+    info JSONB DEFAULT '{}' -- сведения: оглавление, описание и пр.
 );
 
 -- связь между книжками и писателями
