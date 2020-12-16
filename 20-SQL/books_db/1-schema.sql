@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS books_authors;
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS authors;
 DROP TABLE IF EXISTS publishers;
+DROP INDEX IF EXISTS books_title_idx;
 
 /*
     Создаём таблицы БД.
@@ -43,6 +44,8 @@ CREATE TABLE books (
     genres TEXT[] DEFAULT '{"не указано"}', -- жанры
     info JSONB DEFAULT '{}' -- сведения: оглавление, описание и пр.
 );
+-- индекс на базе бинарного дерева для быстрого поиска по названию книг
+CREATE INDEX IF NOT EXISTS books_title_idx ON books USING btree (lower(title));
 
 -- связь между книжками и писателями
 -- (у одной книги может быть несколько авторов)
