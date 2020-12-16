@@ -37,12 +37,12 @@ func main() {
 	}
 	fmt.Printf("%+v\n", item)
 	// неверное имя функции
-	client.Call("Server.WrongName", req, &item)
+	/*err = client.Call("Server.WrongName", req, &item)
 	if err != nil {
 		log.Fatal(err)
-	}
+	}*/
 	// неверные типы аргументов
-	client.Call("Server.WrongName", 100, "ABC")
+	err = client.Call("Server.Book", 100, "ABC")
 	if err != nil {
 		log.Fatal(err)
 	}

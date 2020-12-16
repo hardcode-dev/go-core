@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -20,8 +18,6 @@ type Arith int
 type Result int
 
 func (t *Arith) Multiply(r *http.Request, args *Args, result *Result) error {
-	body, _ := ioutil.ReadAll(r.Body)
-	fmt.Println("Запрос:", string(body))
 	log.Printf("Multiplying %d with %d\n", args.A, args.B)
 	*result = Result(args.A * args.B)
 	return nil
