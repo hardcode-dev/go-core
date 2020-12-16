@@ -7,15 +7,15 @@
     Удаляем таблицы, если они существуют.
     Удаление производится в обратном относительно создания порядке.
 */ 
+DROP TABLE IF EXISTS books_authors;
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS authors;
 DROP TABLE IF EXISTS publishers;
 
 /*
     Создаём таблицы БД.
-    Сначала создаются зависимые таблицы.
+    Сначала создаются таблицы, на которые ссылаются вторичные ключи.
 */
-
 -- authors - писатели
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY, -- первичный ключ
@@ -38,9 +38,21 @@ CREATE TABLE books (
     title TEXT NOT NULL, -- название
     year INTEGER DEFAULT 0, -- год выпуска (максимум текущий + 10)
     public_domain BOOLEAN DEFAULT FALSE, -- является ли общественным достоянием
-    author_id INTEGER NOT NULL REFERENCES authors(id) DEFAULT 0,
     publisher_id INTEGER REFERENCES publishers(id) DEFAULT 0,
-    price INTEGER DEFAULT 0 CHECK (price >= 0)
+    price INTEGER DEFAULT 0 CHECK (price >= 0),
+    genres TEXT[] DEFAULT '{"не указано"}', -- жанры
+    info JSONB DEFAULT '{}' -- сведения: оглавление, описание и пр.
+);
+-- индекс на базе бинарного дерева для быстрого поиска по названию книг
+CREATE INDEX IF NOT EXISTS books_title_idx ON books USING btree (lower(title));
+
+-- связь между книжками и писателями
+-- (у одной книги может быть несколько авторов)
+CREATE TABLE books_authors (
+    id BIGSERIAL PRIMARY KEY, -- первичный ключ
+    book_id BIGINT NOT NULL REFERENCES books(id),
+    author_id INTEGER NOT NULL REFERENCES authors(id),
+    UNIQUE(book_id, author_id)
 );
 
 -- функция-триггер для проверки года выпуска книги
