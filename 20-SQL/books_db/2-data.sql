@@ -5,7 +5,7 @@
 */
 
 INSERT INTO authors (id, first_name) VALUES (0, 'автор не указан');
- -- поскольку id установлен принудительно, то необходимо изменить начало послеовательности
+-- поскольку id установлен принудительно, то необходимо изменить начало послеовательности
 ALTER SEQUENCE authors_id_seq RESTART WITH 100;
 
 INSERT INTO publishers (id, name) VALUES (0, 'издательство не указано');
