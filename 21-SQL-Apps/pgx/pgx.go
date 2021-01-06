@@ -22,7 +22,7 @@ type book struct {
 func main() {
 	ctx := context.Background()
 	// Подключение к БД. Функция возвращает объект БД.
-	db, err := pgxpool.Connect(context.Background(), "postgres://postgres:GoPassword!@ubuntu-server.northeurope.cloudapp.azure.com/books")
+	db, err := pgxpool.Connect(context.Background(), "postgres://postgres:Password@ubuntu-server.northeurope.cloudapp.azure.com/books")
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}

@@ -28,7 +28,7 @@ func main() {
 	// Подключение к БД.
 	// В зависимости от драйвера, sql.Open может не выполнять фактического подключения,
 	// а только проверить параметры соединения с БД.
-	db, err = sql.Open("mysql", "root:GoPassword!@tcp(ubuntu-server.northeurope.cloudapp.azure.com:3306)/books")
+	db, err = sql.Open("mysql", "root:Password@tcp(ubuntu-server.northeurope.cloudapp.azure.com:3306)/books")
 	if err != nil {
 		log.Fatal(err)
 	}
