@@ -1,7 +1,7 @@
 package memstore
 
 import (
-	"gosearch/pkg/crawler"
+	"go-core/gosearch/pkg/crawler"
 	"testing"
 )
 

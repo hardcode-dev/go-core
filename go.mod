@@ -2,11 +2,6 @@ module go-core
 
 go 1.15
 
-replace (
-	go-core/01-intro/crawler/pkg/spider v0.0.0 => ./01-intro/crawler/pkg/spider
-	go-core/17-api-2/pkg/api v0.0.0 => ./17-api-2/pkg/api
-)
-
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-sql-driver/mysql v1.5.0
@@ -18,6 +13,7 @@ require (
 	github.com/jackc/pgtype v1.6.2
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jackc/pgx/v4 v4.10.0
+	github.com/prometheus/client_golang v1.9.0
 	golang.org/x/net v0.0.0-20200822124328-c89045814202
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 )

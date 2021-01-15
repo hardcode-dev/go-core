@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"time"
 
-	"gosearch/pkg/api"
-	"gosearch/pkg/crawler"
-	"gosearch/pkg/crawler/spider"
-	"gosearch/pkg/engine"
-	"gosearch/pkg/index"
-	"gosearch/pkg/index/hash"
-	"gosearch/pkg/storage"
-	"gosearch/pkg/storage/memstore"
+	"go-core/gosearch/pkg/api"
+	"go-core/gosearch/pkg/crawler"
+	"go-core/gosearch/pkg/crawler/spider"
+	"go-core/gosearch/pkg/engine"
+	"go-core/gosearch/pkg/index"
+	"go-core/gosearch/pkg/index/hash"
+	"go-core/gosearch/pkg/storage"
+	"go-core/gosearch/pkg/storage/memstore"
 
 	"github.com/gorilla/mux" // маршрутизатор HTTP-запросов
 )
