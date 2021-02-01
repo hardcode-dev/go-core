@@ -6,9 +6,9 @@
 - Требований к выбору БД также нет. Требуется создать прототип службы.
 
 ### Структура приложения: ###
-/cmd/catalog - исполняемы пакет службы  
+/cmd/catalog - исполняемый пакет службы  
 /pkg/api - REST API  
 /pkg/models - разделяемые типы данных  
 /pkg/storage - интерфейс хранилища данных  
 /pkg/storage/mem - БД в памяти  
-/pkg/storage/mongo - БД на сервер MongoDB  
+/pkg/storage/mongo - БД на сервере MongoDB  
